@@ -10,7 +10,9 @@ app.use(express.json());
  *     Route: /version
  *     Response (Text): "1.0.0"
  */
-// Your code here
+app.get('/version', (req, res) => {
+    res.send('1.0.0'); // send plain text response
+})
 
 /**
  *  Basic Phase 2 - Route param and JSON response
@@ -28,7 +30,19 @@ app.use(express.json());
  *  Hint: Use your name, birth date and favorite movies (as strings in the code)
  *  combined with the id sent as a route parameter in the url
  */
-// Your code here
+app.get('/viewers/:id', (req, res) => {
+    const { id } = req.params;
+
+    const user = {
+        id: parseInt(id),
+        firstName: 'John',
+        lastName: 'Doe',
+        birthDate: '01/01/1990',
+        favoriteMovies: ['Inception', 'The Matrix', 'Interstellar']
+    }
+
+    res.json(user); // send json response
+})
 
 /** Basic Phase 3 - Query params in URL
  *      Method: GET
@@ -47,7 +61,15 @@ app.use(express.json());
  *          message required
  *          message required
  */
-// Your code here
+app.get('/info', (req, res) => {
+    const { message } = req.query;
+
+    if (!message) {
+        res.send('message required'); // respond with error message
+    } else {
+        res.send(message); // respond with the message
+    }
+})
 
 /**
  *  IMPORTANT: Scroll to the top for basic phases.
@@ -81,7 +103,18 @@ app.use(express.json());
  *      Alternate response object:
  *          { "id": 98765432, "name": "Honey Sweet", "year": 1967, "isFavorite": false }
  */
-// Your code here
+app.post('./movies', (req, res) => {
+    const { name, year, favorite } = req.body;
+
+    const response = {
+        id: Math.floor(Math.random() * 1000000), // generate random id
+        name,
+        year: parseInt(year), // convert year to a number
+        isFavorite: favorite == 'on' // check if favourite is on
+    }
+
+    res.json(response); // send JSON response
+})
 
 /**
  *  Advanced Bonus Phase B - Research how to return static
@@ -98,7 +131,7 @@ app.use(express.json());
  *
  *      Test route: /logo.png
  */
-// Your code here
+app.use(express.static('public'));
 
 // DO NOT EDIT - Set port and listener
 if (require.main === module) {
